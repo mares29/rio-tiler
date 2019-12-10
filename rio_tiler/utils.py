@@ -434,9 +434,7 @@ def _tile_read(
             "Dataset covers less than {:.0f}% of tile".format(cover_ratio * 100)
         )
 
-    if tile_edge_padding > 0 and not _requested_tile_aligned_with_internal_tile(
-        src_dst, bounds, tilesize
-    ):
+    if tile_edge_padding > 0:
         vrt_transform = vrt_transform * Affine.translation(
             -tile_edge_padding, -tile_edge_padding
         )
