@@ -222,7 +222,7 @@ def _raster_get_stats(
         )
 
         if expr is not None:
-            bands_names = tuple(set(re.findall(r"(?P<bands>b[0-9]+)", expr)))
+            bands_names = tuple(sorted(set(re.findall(r"(?P<bands>b[0-9]+)", expr))))
             rgb = expr.split(",")
             mask = np.array([arr.mask[0]])
 
