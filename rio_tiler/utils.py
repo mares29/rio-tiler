@@ -164,6 +164,11 @@ def _raster_get_stats(
     elif isinstance(indexes, tuple):
         indexes = list(indexes)
 
+    if expr is not None:
+        bands_names = tuple(sorted(set(re.findall(r"(?P<bands>b[0-9]+)", expr))))
+        if indexes is None:
+            indexes = tuple([int(b.replace("b", "")) for b in bands_names])
+
     levels = src_dst.overviews(1)
     width = src_dst.width
     height = src_dst.height
@@ -222,7 +227,6 @@ def _raster_get_stats(
         )
 
         if expr is not None:
-            bands_names = tuple(sorted(set(re.findall(r"(?P<bands>b[0-9]+)", expr))))
             rgb = expr.split(",")
             mask = np.array([arr.mask[0]])
 
