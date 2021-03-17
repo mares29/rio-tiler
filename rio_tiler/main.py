@@ -85,7 +85,7 @@ def tile(address, tile_x, tile_y, tile_z, tilesize=256, **kwargs):
     """
     with rasterio.open(address) as src:
         bounds = transform_bounds(src.crs, dst_crs, *src.bounds, densify_pts=21)
-        print(bounds)
+        
         if not utils.tile_exists(bounds, tile_z, tile_x, tile_y):
             raise TileOutsideBounds(
                 "Tile {}/{}/{} is outside image bounds".format(tile_z, tile_x, tile_y)
@@ -93,5 +93,5 @@ def tile(address, tile_x, tile_y, tile_z, tilesize=256, **kwargs):
 
         mercator_tile = mercantile.Tile(x=tile_x, y=tile_y, z=tile_z)
         tile_bounds = mercantile.xy_bounds(mercator_tile)
-        print(tile_bounds)
+        
         return utils.tile_read(src, tile_bounds, tilesize, **kwargs)
