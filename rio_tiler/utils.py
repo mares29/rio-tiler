@@ -9,7 +9,7 @@ import warnings
 import numpy as np
 import numexpr as ne
 
-import mercantile
+import morecantile
 
 import rasterio
 from rasterio.crs import CRS
@@ -27,6 +27,9 @@ from affine import Affine
 
 logger = logging.getLogger(__name__)
 
+crs = CRS.from_wkt('PROJCS["S-JTSK / Krovak East North",GEOGCS["S-JTSK",DATUM["System_Jednotne_Trigonometricke_Site_Katastralni",SPHEROID["Bessel 1841",6377397.155,299.1528128,AUTHORITY["EPSG","7004"]],TOWGS84[589,76,480,0,0,0,0],AUTHORITY["EPSG","6156"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4156"]],PROJECTION["Krovak"],PARAMETER["latitude_of_center",49.5],PARAMETER["longitude_of_center",24.83333333333333],PARAMETER["azimuth",30.28813972222222],PARAMETER["pseudo_standard_parallel_1",78.5],PARAMETER["scale_factor",0.9999],PARAMETER["false_easting",0],PARAMETER["false_northing",0],UNIT["metre",1,AUTHORITY["EPSG","9001"]],AXIS["X",EAST],AXIS["Y",NORTH],AUTHORITY["EPSG","5514"]]')
+extent = [-951499.37, -1276279.09, -159365.31, -983013.08]
+EPSG5514_TMS = morecantile.TileMatrixSet.custom(extent, crs, title="S-JTSK (EPSG:5514)")
 
 def _chunks(l, n):
     """Yield successive n-sized chunks from l."""
@@ -553,9 +556,9 @@ def tile_exists(bounds, tile_z, tile_x, tile_y):
         if True, the z-x-y mercator tile in inside the bounds.
 
     """
-    mintile = mercantile.tile(bounds[0], bounds[3], tile_z)
-    maxtile = mercantile.tile(bounds[2], bounds[1], tile_z)
-    print(bounds, bounds[0])
+    mintile = EPSG5514_TMS.tile(bounds[0], bounds[3], tile_z)
+    maxtile = EPSG5514_TMS.tile(bounds[2], bounds[1], tile_z)
+    print(bounds)
     print(mintile)
     print(maxtile)
     return (
