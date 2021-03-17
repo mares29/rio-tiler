@@ -86,7 +86,7 @@ def _raster_get_stats(
     overview_level=None,
     max_size=1024,
     percentiles=(2, 98),
-    dst_crs=CRS({"init": "EPSG:4326"}),
+    dst_crs=CRS({"init": "EPSG:5514"}),
     histogram_bins=10,
     histogram_range=None,
     resampling_method="bilinear",
@@ -113,7 +113,7 @@ def _raster_get_stats(
         Percentile or sequence of percentiles to compute,
         which must be between 0 and 100 inclusive (default: (2, 98)).
     dst_crs: CRS or dict
-        Target coordinate reference system (default: EPSG:4326).
+        Target coordinate reference system (default: EPSG:5514).
     histogram_bins: int, optional
         Defines the number of equal-width histogram bins (default: 10).
     histogram_range: tuple or list, optional
@@ -136,7 +136,7 @@ def _raster_get_stats(
         {
             'bounds': {
                 'value': (145.72265625, 14.853515625, 145.810546875, 14.94140625),
-                'crs': '+init=EPSG:4326'
+                'crs': '+init=EPSG:5514'
             },
             'minzoom': 8,
             'maxzoom': 12,
@@ -289,7 +289,7 @@ def raster_get_stats(source, **kwargs):
 
 
 def get_vrt_transform(
-    src_dst, bounds, bounds_crs=None, dst_crs=CRS({"init": "EPSG:3857"})
+    src_dst, bounds, bounds_crs=None, dst_crs=CRS({"init": "EPSG:5514"})
 ):
     """
     Calculate VRT transform.
@@ -301,10 +301,10 @@ def get_vrt_transform(
     bounds : list
         Bounds (left, bottom, right, top) in target crs ("dst_crs").
     bounds_crs : str
-        Coordinate reference system string (default "epsg:3857")
+        Coordinate reference system string (default "epsg:5514")
         Replaced by "dst_crs" and will be deprecated in 1.3.0.
     dst_crs: CRS or str, optional
-        Target coordinate reference system (default "epsg:3857").
+        Target coordinate reference system (default "epsg:5514").
 
     Returns
     -------
