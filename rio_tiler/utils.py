@@ -555,6 +555,7 @@ def tile_exists(bounds, tile_z, tile_x, tile_y):
     """
     mintile = mercantile.tile(bounds[0], bounds[3], tile_z)
     maxtile = mercantile.tile(bounds[2], bounds[1], tile_z)
+    print(bounds, bounds[0])
     print(mintile)
     print(maxtile)
     return (
