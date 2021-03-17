@@ -1,6 +1,7 @@
 """rio_tiler.main: raster processing."""
 
 import mercantile
+import morecantile
 import rasterio
 from rasterio.crs import CRS
 from rasterio.warp import transform_bounds
@@ -9,6 +10,8 @@ from rio_tiler import utils
 from rio_tiler.errors import TileOutsideBounds
 
 dst_crs = CRS.from_wkt('PROJCS["S-JTSK / Krovak East North",GEOGCS["S-JTSK",DATUM["System_Jednotne_Trigonometricke_Site_Katastralni",SPHEROID["Bessel 1841",6377397.155,299.1528128,AUTHORITY["EPSG","7004"]],TOWGS84[589,76,480,0,0,0,0],AUTHORITY["EPSG","6156"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4156"]],PROJECTION["Krovak"],PARAMETER["latitude_of_center",49.5],PARAMETER["longitude_of_center",24.83333333333333],PARAMETER["azimuth",30.28813972222222],PARAMETER["pseudo_standard_parallel_1",78.5],PARAMETER["scale_factor",0.9999],PARAMETER["false_easting",0],PARAMETER["false_northing",0],UNIT["metre",1,AUTHORITY["EPSG","9001"]],AXIS["X",EAST],AXIS["Y",NORTH],AUTHORITY["EPSG","5514"]]')
+extent = [-951499.37, -1276279.09, -159365.31, -983013.08]
+EPSG5514_TMS = morecantile.TileMatrixSet.custom(extent, dst_crs, title="S-JTSK (EPSG:5514)")
 
 def bounds(address):
     """
@@ -84,14 +87,7 @@ def tile(address, tile_x, tile_y, tile_z, tilesize=256, **kwargs):
 
     """
     with rasterio.open(address) as src:
-        bounds = transform_bounds(src.crs, dst_crs, *src.bounds, densify_pts=21)
-        
-        if not utils.tile_exists(bounds, tile_z, tile_x, tile_y):
-            raise TileOutsideBounds(
-                "Tile {}/{}/{} is outside image bounds".format(tile_z, tile_x, tile_y)
-            )
-
-        mercator_tile = mercantile.Tile(x=tile_x, y=tile_y, z=tile_z)
-        tile_bounds = mercantile.xy_bounds(mercator_tile)
+        mercator_tile = EPSG5514_TMS.tile(x=tile_x, y=tile_y, z=tile_z)
+        tile_bounds = EPSG5514_TMS.xy_bounds(mercator_tile)
         
         return utils.tile_read(src, tile_bounds, tilesize, **kwargs)
