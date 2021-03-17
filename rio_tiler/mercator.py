@@ -75,12 +75,12 @@ def get_zooms(src_dst, ensure_global_max_zoom=False, tilesize=256):
         Min/Max Mercator zoom levels.
 
     """
-    bounds = transform_bounds(src_dst.crs, "epsg:4326", *src_dst.bounds, densify_pts=21)
+    bounds = transform_bounds(src_dst.crs, "epsg:5514", *src_dst.bounds, densify_pts=21)
     center = [(bounds[0] + bounds[2]) / 2, (bounds[1] + bounds[3]) / 2]
     lat = center[1] if ensure_global_max_zoom else 0
 
     dst_affine, w, h = calculate_default_transform(
-        src_dst.crs, "epsg:3857", src_dst.width, src_dst.height, *src_dst.bounds
+        src_dst.crs, "epsg:5514", src_dst.width, src_dst.height, *src_dst.bounds
     )
 
     mercator_resolution = max(abs(dst_affine[0]), abs(dst_affine[4]))
